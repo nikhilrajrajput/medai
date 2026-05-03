@@ -5,18 +5,16 @@ dotenv.config();
 
 // ─── Transporter ──────────────────────────────────────────────────────────────
 const transporter = nodemailer.createTransport({
-  // If you use Gmail, just provide 'gmail'. If not, provide the SMTP host.
-  host: process.env.EMAIL_HOST, 
-  service: !process.env.EMAIL_HOST ? 'gmail' : undefined,
-  port: process.env.EMAIL_PORT || 587,
-  secure: process.env.EMAIL_PORT == 465, 
+  service: 'gmail',
+  port: process.env.EMAIL_PORT,
+  secure: true, // Use true for port 465, false for 587
   auth: {
     user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+    pass: process.env.EMAIL_PASS, // Your 16-character App Password
   },
-  // Add these for production stability
   tls: {
-    rejectUnauthorized: false 
+    // This helps if Render's network has trouble verifying the certificate
+    rejectUnauthorized: false
   }
 });
 // ─── Generate 6-digit OTP ─────────────────────────────────────────────────────
