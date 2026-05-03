@@ -1,6 +1,5 @@
 const express = require('express');
 const { protect } = require('../middleware/auth');
-const { validate, schemas } = require('../middleware/validation');
 const { askGemini, parseJSON } = require('../config/gemini');
 const SearchHistory = require('../models/SearchHistory');
 
@@ -41,7 +40,7 @@ Respond ONLY with JSON.
 `;
 
 // ─── POST /api/medication/search ──────────────────────────────────────────────
-router.post('/search', protect, async (req, res, next) => {
+router.post('/search',protect, async (req, res, next) => {
   try {
     const { medicationName } = req.body;
     const raw = await askGemini(MEDICATION_PROMPT(medicationName));
