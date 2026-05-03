@@ -14,12 +14,8 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASS, // Your 16-character App Password
   },
   pool: true,
-  maxConnections: 3,
-  maxMessages: 50,
-
-  connectionTimeout: 15000,
-  greetingTimeout: 10000,
-  socketTimeout: 20000,
+  maxConnections: 5,
+  maxMessages: 100,
 
   logger: true,
   debug: false,
