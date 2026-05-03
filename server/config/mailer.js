@@ -12,6 +12,16 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS, // Your 16-character App Password
   },
+  pool: true,
+  maxConnections: 3,
+  maxMessages: 50,
+
+  connectionTimeout: 15000,
+  greetingTimeout: 10000,
+  socketTimeout: 20000,
+
+  logger: true,
+  debug: false,
   tls: {
     // This helps if Render's network has trouble verifying the certificate
     rejectUnauthorized: false
