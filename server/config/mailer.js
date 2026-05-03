@@ -5,17 +5,20 @@ dotenv.config();
 
 // ─── Transporter ──────────────────────────────────────────────────────────────
 const transporter = nodemailer.createTransport({
-
-        service: process.env.EMAIL_HOST || 'gmail',
-        port: process.env.EMAIL_PORT,
-        secure: false,
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS,  
-        }
-        
+  // If you use Gmail, just provide 'gmail'. If not, provide the SMTP host.
+  host: process.env.EMAIL_HOST, 
+  service: !process.env.EMAIL_HOST ? 'gmail' : undefined,
+  port: process.env.EMAIL_PORT || 587,
+  secure: process.env.EMAIL_PORT == 465, 
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+  // Add these for production stability
+  tls: {
+    rejectUnauthorized: false 
+  }
 });
-
 // ─── Generate 6-digit OTP ─────────────────────────────────────────────────────
 const generateOTP = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -96,12 +99,12 @@ const sendOTPEmail = async (toEmail, otp, name = 'User') => {
 
 // ─── Verify transporter on startup ───────────────────────────────────────────
 const verifyMailer = async () => {
+  console.log('Connecting to host:', process.env.EMAIL_HOST || 'gmail');
   try {
     await transporter.verify();
-    console.log('✅  Nodemailer ready');
+    console.log('✅ Nodemailer ready');
   } catch (err) {
-    console.warn('⚠️   Nodemailer not configured:', err.message);
+    console.warn('⚠️ Nodemailer error details:', err);
   }
 };
-
 module.exports = { generateOTP, sendOTPEmail, verifyMailer };
