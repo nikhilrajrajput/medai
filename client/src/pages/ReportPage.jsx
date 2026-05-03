@@ -96,7 +96,7 @@ export default function ReportPage() {
           <h1 className="font-display text-3xl">Report Analysis</h1>
         </div>
         <p style={{ color: 'var(--text2)', fontSize: 14 }}>
-          Upload a medical report — Gemini AI identifies findings, suggests follow-up treatments, and flags urgency.
+          Upload a medical report — AI will identifies findings, suggests follow-up treatments, and flags urgency.
         </p>
       </div>
 
@@ -156,7 +156,7 @@ export default function ReportPage() {
               {loading ? (
                 <>
                   <Loader2 size={16} className="animate-spin" />
-                  Analyzing with Gemini AI…
+                  Analyzing with AI…
                 </>
               ) : (
                 <>

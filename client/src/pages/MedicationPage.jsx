@@ -59,7 +59,7 @@ export default function MedicationPage() {
           <h1 className="font-display text-3xl">Medication Info</h1>
         </div>
         <p style={{ color: 'var(--text2)', fontSize: 14 }}>
-          Powered by Gemini AI — enter any medication name to get comprehensive clinical data.
+          Powered by AI — enter any medication name to get comprehensive clinical data.
         </p>
       </div>
 
@@ -112,7 +112,7 @@ export default function MedicationPage() {
         <div className="card p-6 space-y-4">
           <div className="flex items-center gap-3 mb-2">
             <Loader2 size={18} className="animate-spin" style={{ color: 'var(--green)' }} />
-            <span style={{ color: 'var(--text2)', fontSize: 14 }}>Gemini AI is fetching medication data…</span>
+            <span style={{ color: 'var(--text2)', fontSize: 14 }}>AI is fetching medication data…</span>
           </div>
           {[80, 60, 70, 50, 65].map((w, i) => (
             <div key={i} className="skeleton h-3" style={{ width: `${w}%` }} />

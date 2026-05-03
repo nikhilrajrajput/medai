@@ -7,7 +7,7 @@ const getTextModel = () => genAI.getGenerativeModel({ model: 'gemini-3.1-flash-l
 
 // ─── Vision/multimodal model ──────────────────────────────────────────────────
 const getVisionModel = () =>
-  genAI.getGenerativeModel({ model: 'gemini-3.1-flash-lite-preview' });  //gemini-3-flash-preview - gemini-3.1-flash-lite-preview
+  genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' });  //gemini-3-flash-preview - gemini-3.1-flash-lite-preview
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
