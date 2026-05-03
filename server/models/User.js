@@ -29,15 +29,21 @@ const userSchema = new mongoose.Schema(
       enum: ['user', 'doctor', 'admin'],
       default: 'user',
     },
-    isActive: { type: Boolean, default: true },
+    isActive:   { type: Boolean, default: true },
+    isVerified: { type: Boolean, default: false },
+
+    // OTP fields (hidden from default queries)
+    otp:          { type: String, default: null, select: false },
+    otpExpiresAt: { type: Date,   default: null, select: false },
+    otpAttempts:  { type: Number, default: 0,    select: false },
+
     lastLogin: { type: Date, default: null },
   },
   { timestamps: true }
 );
 
-// Hash password before saving (async hook without next)
+// Hash password before saving
 userSchema.pre('save', async function () {
-  // `this` is the document
   if (!this.isModified('password')) return;
   const salt = await bcrypt.genSalt(12);
   this.password = await bcrypt.hash(this.password, salt);
@@ -48,10 +54,37 @@ userSchema.methods.comparePassword = async function (candidate) {
   return bcrypt.compare(candidate, this.password);
 };
 
-// Strip sensitive fields from JSON
+// Set a new OTP with 10-min expiry
+userSchema.methods.setOTP = function (otp) {
+  this.otp          = otp;
+  this.otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
+  this.otpAttempts  = 0;
+};
+
+// Verify submitted OTP - returns 'ok' | 'wrong' | 'expired' | 'invalid' | 'too_many'
+userSchema.methods.verifyOTP = function (inputOtp) {
+  if (this.otpAttempts >= 5)                     return 'too_many';
+  if (!this.otp || !this.otpExpiresAt)           return 'invalid';
+  if (Date.now() > this.otpExpiresAt.getTime())  return 'expired';
+  this.otpAttempts += 1;
+  if (this.otp !== inputOtp)                     return 'wrong';
+  return 'ok';
+};
+
+// Clear OTP fields after successful verification or resend
+userSchema.methods.clearOTP = function () {
+  this.otp          = null;
+  this.otpExpiresAt = null;
+  this.otpAttempts  = 0;
+};
+
+// Strip sensitive fields from JSON output
 userSchema.methods.toJSON = function () {
   const obj = this.toObject();
   delete obj.password;
+  delete obj.otp;
+  delete obj.otpExpiresAt;
+  delete obj.otpAttempts;
   delete obj.__v;
   return obj;
 };

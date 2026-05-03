@@ -1,11 +1,13 @@
 const Joi = require('joi');
 
-const validate = (schema, body) => {
-  const { error } = schema.validate(body, { abortEarly: false });
+// Returns an Express middleware (req, res, next)
+const validate = (schema) => (req, res, next) => {
+  const { error } = schema.validate(req.body, { abortEarly: false });
   if (error) {
-    return error.details.map((d) => d.message.replace(/"/g, ''));
+    const errors = error.details.map((d) => d.message.replace(/"/g, ''));
+    return res.status(400).json({ success: false, message: errors[0], errors });
   }
-  return null;
+  next();
 };
 
 const schemas = {
@@ -20,6 +22,15 @@ const schemas = {
   login: Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().required(),
+  }),
+  verifyOtp: Joi.object({
+    email: Joi.string().email().required(),
+    otp: Joi.string().length(6).required().messages({
+      'string.length': 'OTP must be exactly 6 digits',
+    }),
+  }),
+  resendOtp: Joi.object({
+    email: Joi.string().email().required(),
   }),
   medication: Joi.object({
     medicationName: Joi.string().min(2).max(100).required(),

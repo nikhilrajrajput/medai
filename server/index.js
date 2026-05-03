@@ -1,23 +1,24 @@
 require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const helmet = require('helmet');
-const morgan = require('morgan');
+const express  = require('express');
+const cors     = require('cors');
+const helmet   = require('helmet');
+const morgan   = require('morgan');
 const rateLimit = require('express-rate-limit');
 
-const connectDB = require('./config/database');
+const connectDB    = require('./config/database');
 const errorHandler = require('./middleware/errorHandler');
+const { verifyMailer } = require('./config/mailer');
 
-const authRoutes     = require('./routes/auth');
+const authRoutes       = require('./routes/auth');
 const medicationRoutes = require('./routes/medication');
-const reportRoutes   = require('./routes/report');
-const historyRoutes  = require('./routes/history');
+const reportRoutes     = require('./routes/report');
+const historyRoutes    = require('./routes/history');
 
 connectDB();
+verifyMailer();
 
 const app = express();
 
-// ─── Core middleware ───────────────────────────────────────────────────────────
 app.use(helmet());
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:3000',
@@ -29,12 +30,6 @@ app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ extended: true, limit: '20mb' }));
 if (process.env.NODE_ENV !== 'production') app.use(morgan('dev'));
 
-// ─── Rate limiters ─────────────────────────────────────────────────────────────
-// FIX: Define rate limiters as plain middleware variables.
-//      NEVER do: app.use('/some/path', rateLimit({...}))
-//      Mounting rateLimit with a path prefix breaks the `next` reference that
-//      Express threads through the middleware chain, causing downstream handlers
-//      to receive `next = undefined` and throw "next is not a function".
 const globalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
@@ -51,27 +46,20 @@ const authLimiter = rateLimit({
   message: { success: false, message: 'Too many auth attempts. Please wait.' },
 });
 
-// ─── Routes ────────────────────────────────────────────────────────────────────
-// FIX: Apply global limiter once, without a path.
-//      Apply auth limiter inline on the same app.use() call as the router —
-//      NOT as a separate app.use('/api/auth', authLimiter) call.
 app.use(globalLimiter);
 app.use('/api/auth',       authLimiter, authRoutes);
 app.use('/api/medication', medicationRoutes);
 app.use('/api/report',     reportRoutes);
 app.use('/api/history',    historyRoutes);
 
-// ─── Health check ──────────────────────────────────────────────────────────────
 app.get('/api/health', (_req, res) => {
   res.json({ success: true, message: 'MedAI API is running.', timestamp: new Date() });
 });
 
-// ─── 404 ───────────────────────────────────────────────────────────────────────
 app.use((_req, res) => {
   res.status(404).json({ success: false, message: 'Route not found.' });
 });
 
-// ─── Global error handler — must be last and must have exactly 4 params ────────
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
