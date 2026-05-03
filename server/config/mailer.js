@@ -1,12 +1,19 @@
 const nodemailer = require('nodemailer');
+const dotenv= require('dotenv')
+
+dotenv.config();
 
 // ─── Transporter ──────────────────────────────────────────────────────────────
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,   // Gmail App Password (not your login password)
-  },
+
+        service: process.env.EMAIL_HOST || 'gmail',
+        port: process.env.PORT,
+        secure: false,
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,  
+        }
+        
 });
 
 // ─── Generate 6-digit OTP ─────────────────────────────────────────────────────
