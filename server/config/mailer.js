@@ -1,5 +1,3 @@
-const dns = require('dns');
-dns.setDefaultResultOrder('ipv4first');
 const nodemailer = require('nodemailer');
 const dotenv= require('dotenv')
 
@@ -7,9 +5,9 @@ dotenv.config();
 
 // ─── Transporter ──────────────────────────────────────────────────────────────
 const transporter = nodemailer.createTransport({
-  service: process.EMAIL_HOST,
+  service: process.env.EMAIL_HOST,
   port: process.env.EMAIL_PORT,
-  secure: false, // Use true for port 465, false for 587
+  secure: true, // Use true for port 465, false for 587
   family: 4,
   auth: {
     user: process.env.EMAIL_USER,
