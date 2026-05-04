@@ -63,9 +63,13 @@ app.use((_req, res) => {
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀  MedAI server running on http://localhost:${PORT}`);
-  console.log(`🌍  Environment: ${process.env.NODE_ENV || 'development'}`);
+app.listen(PORT, (err) => {
+    if (err) {
+        
+        console.log(`Error in ${process.env.NODE_ENV}: ${err}`)
+    }
+    console.log(`🚀  MedAI server running on http://localhost:${PORT}`);
+    console.log(`🌍  Environment: ${process.env.NODE_ENV || 'development'}`);
 });
 
 module.exports = app;
