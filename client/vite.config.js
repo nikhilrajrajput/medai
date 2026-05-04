@@ -9,7 +9,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'https://medai-7ga7.onrender.com',
+        target: 'http://localhost:5000',
         changeOrigin: true,
       },
     },
