@@ -21,8 +21,12 @@ const transporter = nodemailer.createTransport({
   pool: true,
   maxConnections: 3,
   maxMessages: 50,
+  connectionTimeout: 15000,
+  greetingTimeout: 15000,
+  socketTimeout: 20000,
   tls: {
     rejectUnauthorized: false, // Needed on some cloud platforms with strict TLS
+    minVersion: 'TLSv1.2',
   },
 });
 
