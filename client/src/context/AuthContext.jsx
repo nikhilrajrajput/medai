@@ -25,13 +25,13 @@ export const AuthProvider = ({ children }) => {
     bootstrap();
   }, []);
 
-  // Step 1: Register → server sends OTP
+  // Step 1: Register → Supabase sends OTP email automatically
   const register = useCallback(async (name, email, password, confirmPassword) => {
     const { data } = await api.post('/auth/register', { name, email, password, confirmPassword });
-    return data; // { success, message, data: { email, requiresVerification } }
+    return data; // { success, message, data: { email, requiresVerification: true } }
   }, []);
 
-  // Step 2: Verify OTP → returns tokens
+  // Step 2: Verify OTP → get JWT tokens
   const verifyOtp = useCallback(async (email, otp) => {
     const { data } = await api.post('/auth/verify-otp', { email, otp });
     if (data.success && data.data?.accessToken) {

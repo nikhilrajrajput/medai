@@ -1,6 +1,5 @@
 const Joi = require('joi');
 
-// Returns an Express middleware (req, res, next)
 const validate = (schema) => (req, res, next) => {
   const { error } = schema.validate(req.body, { abortEarly: false });
   if (error) {

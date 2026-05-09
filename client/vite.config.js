@@ -8,7 +8,7 @@ export default defineConfig({
     server: {
     proxy: {
       '/api': {
-        target: 'https://medai-2122.vercel.app',
+        target: 'http://localhost:5000',
         changeOrigin: true,
       },
     },
