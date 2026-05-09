@@ -8,7 +8,7 @@ export default defineConfig({
     server: {
     proxy: {
       '/api': {
-        target: 'https://medai-liart.vercel.app',
+        target: 'https://medai-puce-delta.vercel.app',
         changeOrigin: true,
       },
     },
