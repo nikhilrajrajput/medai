@@ -14,11 +14,16 @@ const medicationRoutes = require('./routes/medication');
 const reportRoutes     = require('./routes/report');
 const historyRoutes    = require('./routes/history');
 
-// ─── Startup connections ───────────────────────────────────────────────────────
 connectDB();
 verifySupabase();
 
 const app = express();
+
+// ─── FIX: Trust the reverse proxy (Render / Railway / Vercel / etc.) ──────────
+// Without this, Express sees X-Forwarded-For headers from the proxy but refuses
+// to trust them, causing express-rate-limit to throw ERR_ERL_UNEXPECTED_X_FORWARDED_FOR.
+// '1' means trust exactly one proxy hop (the platform's load balancer).
+app.set('trust proxy', 1);
 
 // ─── Core middleware ───────────────────────────────────────────────────────────
 app.use(helmet());
@@ -33,11 +38,15 @@ app.use(express.urlencoded({ extended: true, limit: '20mb' }));
 if (process.env.NODE_ENV !== 'production') app.use(morgan('dev'));
 
 // ─── Rate limiters ─────────────────────────────────────────────────────────────
+// FIX: Add validate: false to suppress the ERR_ERL_FORWARDED_HEADER warning
+// about the 'Forwarded' header. The trust proxy setting above already handles
+// X-Forwarded-For correctly; this just silences the secondary validation check.
 const globalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
   standardHeaders: true,
   legacyHeaders: false,
+  validate: { xForwardedForHeader: false },
   message: { success: false, message: 'Too many requests. Please try again later.' },
 });
 
@@ -46,6 +55,7 @@ const authLimiter = rateLimit({
   max: 20,
   standardHeaders: true,
   legacyHeaders: false,
+  validate: { xForwardedForHeader: false },
   message: { success: false, message: 'Too many auth attempts. Please wait.' },
 });
 
