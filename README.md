@@ -4,16 +4,16 @@
 
 <img width="1908" height="889" alt="image" src="https://github.com/user-attachments/assets/92b60b4d-8beb-4d3e-a2e9-feedd0307d67" />
 
-[![Node.js]<img width="1898" height="881" alt="image" src="https://github.com/user-attachments/assets/ca203f21-6fda-47a3-8675-c94e88c0492f" />
+[<img width="1898" height="881" alt="image" src="https://github.com/user-attachments/assets/ca203f21-6fda-47a3-8675-c94e88c0492f" />
 ](https://nodejs.org)
-[![Express](<img width="1034" height="840" alt="image" src="https://github.com/user-attachments/assets/50b1d471-54ad-4b96-9c9a-d63ccbd4a179" />
-)](https://expressjs.com)
-[![React](<img width="1912" height="892" alt="image" src="https://github.com/user-attachments/assets/867d7735-aa2a-4fdf-a7d2-ec6fa2927a91" />
-)](https://react.dev)
-[![MongoDB](<img width="1875" height="743" alt="image" src="https://github.com/user-attachments/assets/d53b832b-8d6e-43da-af41-fb3f2c8c8fe8" />
-)](https://mongodb.com)
-[![Supabase](<img width="1895" height="905" alt="image" src="https://github.com/user-attachments/assets/25bbe2a8-0acd-4683-b4cb-f569c56a79c9" />
-)](https://supabase.com)
+[<img width="1034" height="840" alt="image" src="https://github.com/user-attachments/assets/50b1d471-54ad-4b96-9c9a-d63ccbd4a179" />
+]
+[<img width="1912" height="892" alt="image" src="https://github.com/user-attachments/assets/867d7735-aa2a-4fdf-a7d2-ec6fa2927a91" />
+]
+[<img width="1875" height="743" alt="image" src="https://github.com/user-attachments/assets/d53b832b-8d6e-43da-af41-fb3f2c8c8fe8" />
+]
+[<img width="1895" height="905" alt="image" src="https://github.com/user-attachments/assets/25bbe2a8-0acd-4683-b4cb-f569c56a79c9" />
+]
 
 **AI-powered medication insights and medical report analysis — secured with JWT + Supabase OTP email verification.**
 
