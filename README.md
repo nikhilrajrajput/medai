@@ -2,8 +2,8 @@
 
 <div align="center">
 
-![MedAI Banner](<img width="1908" height="889" alt="image" src="https://github.com/user-attachments/assets/92b60b4d-8beb-4d3e-a2e9-feedd0307d67" />
-)
+[![MedAI Banner](<img width="1908" height="889" alt="image" src="https://github.com/user-attachments/assets/92b60b4d-8beb-4d3e-a2e9-feedd0307d67" />
+)]
 
 [![Node.js]<img width="1898" height="881" alt="image" src="https://github.com/user-attachments/assets/ca203f21-6fda-47a3-8675-c94e88c0492f" />
 ](https://nodejs.org)
